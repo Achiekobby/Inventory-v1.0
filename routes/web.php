@@ -38,6 +38,7 @@ Route::middleware(['auth', 'auth_admin'])->group(function(){
     Route::get('suppliers',[SupplierController::class, 'index'])->name('suppliers.index');
     Route::get('new/supplier',[SupplierController::class, 'create'])->name('suppliers.create');
     Route::post('store/supplier',[SupplierController::class, 'store'])->name('suppliers.store');
+    Route::get('delete/supplier',[SupplierController::class, 'destroy'])->name('suppliers.delete');
 });
 
 require __DIR__.'/auth.php';

@@ -76,4 +76,19 @@ class SupplierController extends Controller
         }
     }
 
+    //* Delete a supplier
+    public function destroy(Request $request)
+    {
+        $supplier_id = $request->input('sp_uuid');
+        if(!$supplier_id){
+            Session::flash('error','You need to properly select a supplier to clear');
+            return redirect()->back();
+        }
+        $supplier = Supplier::query()->where('id',$supplier_id)->delete();
+        if($supplier){
+            Session::flash('success','Successfully removed supplier!');
+            return redirect()->back();
+        }
+    }
+
 }
