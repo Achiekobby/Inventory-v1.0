@@ -91,4 +91,46 @@ class SupplierController extends Controller
         }
     }
 
+    //* Edit page
+    public function edit(Request $request)
+    {
+        $supplier_id = $request->input('sp_uuid');
+        $supplier_details = Supplier::query()->where('id',$supplier_id)->first();
+
+        return view('Inventory.edit_supplier', compact('supplier_details'));
+    }
+
+    //* Update the supplier information in the database
+    public function update(SupplierCreateRequest $request)
+    {
+        $supplier_details = Supplier::query()->where('id', request()->input('sp_uuid'))->first();
+
+        $supplier_update = DB::transaction(function() use ($request, $supplier_details){
+            $supplier = $supplier_details->update([
+                'first_name'     => $request->validated()['first_name'],
+                'last_name'      => $request->validated()['last_name'],
+                'email'          => $request->validated()['email'],
+                'phone_number'   => $request->validated()['phone'],
+                'organization'   => $request->validated()['organization'],
+                'role'           => $request->validated()['role'],
+            ]);
+
+            $supplier_details->address()->update([
+                'country'        => $request->validated()['country'],
+                'city'           => $request->validated()['city'],
+                'region'         => $request->validated()['region'],
+                'street'        => $request->validated()['address'],
+            ]);
+
+            return $supplier;
+        });
+
+        if($supplier_update){
+            Session::flash('success','Supplier details updated successfully!');
+            return redirect()->route('suppliers.index');
+        }
+        Session::flash('error','A problem occurred during the supplier details update. Please try again');
+        return redirect()->back();
+    }
+
 }

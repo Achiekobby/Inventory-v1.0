@@ -93,14 +93,17 @@
                                                             class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($supplier->created_at)->format('d/M/Y') }}</span>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <a href="javascript:;"
-                                                            class=" btn btn-warning text-white font-weight-bold text-xs"
-                                                            data-toggle="tooltip" data-original-title="Edit user">
+                                                        <a href="{{ route('suppliers.edit', ['sp_uuid' => $supplier->id]) }}"
+                                                            class=" btn btn-warning btn-tooltip text-white font-weight-bold text-xs"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Edit Supplier" data-original-title="Edit user">
                                                             <i class="material-icons">edit</i>
                                                         </a>
                                                         <a href="{{ route('suppliers.delete', ['sp_uuid' => $supplier->id]) }}"
-                                                            class=" btn btn-danger text-white font-weight-bold text-xs"
-                                                            data-toggle="tooltip" data-original-title="Edit user">
+                                                            class=" btn btn-danger btn-tooltip text-white font-weight-bold text-xs"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Remove Supplier" data-toggle="tooltip"
+                                                            data-original-title="Edit user">
                                                             <i class="material-icons">delete</i>
                                                         </a>
                                                     </td>
