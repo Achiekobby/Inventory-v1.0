@@ -12,7 +12,7 @@ class Category extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    protected $fillable = ['name','image','status'];
+    protected $fillable = ['name','image','status','slug'];
 
     public function products(){
         return $this->hasMany(Product::class);

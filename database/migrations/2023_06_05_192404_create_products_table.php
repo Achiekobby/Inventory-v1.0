@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
             $table->string('brand');
             $table->string('name');
+            $table->string('slug');
             $table->string('code');
             $table->string('image');
             $table->unsignedBigInteger('quantity');

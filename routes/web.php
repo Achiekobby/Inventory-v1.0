@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,13 @@ Route::middleware(['auth', 'auth_admin'])->group(function(){
     Route::get('edit/supplier',[SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::post('update/supplier',[SupplierController::class, 'update'])->name('suppliers.update');
 
+    //Tip :: Categories Routes
+    Route::group(['prefix'=>'categories'], function(){
+        Route::get('/all', [CategoryController::class, 'index'])->name('categories.index');
+        Route::post('/new', [CategoryController::class, 'store'])->name('categories.store');
+    });
 });
+
+
 
 require __DIR__.'/auth.php';

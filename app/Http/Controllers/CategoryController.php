@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Inventory\Category;
 use Illuminate\Http\Request;
 
+//* Utilities
+use Illuminate\Support\Facades\Validator;
+use Session;
+use Image;
+use Illuminate\Support\Str;
+
 class CategoryController extends Controller
 {
     /**
@@ -12,7 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::query()->paginate(10);
+        return view('Inventory.categories.categories', compact('categories'));
     }
 
     /**
@@ -20,7 +27,6 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -28,7 +34,41 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name'=>'required|string',
+            'image'=>'required',
+        ];
+        $validation = Validator::make($request->all(),$rules);
+        if($validation->fails()){
+            Session::flash('error',$validation->errors()->first());
+            return redirect()->back();
+        }
+
+        $filename = null;
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $filename = time().".".$image->getClientOriginalExtension();
+            $path = public_path('uploads/'.$filename);
+
+            //* Resizing the image file
+            Image::make($image)->resize(300,200)->save($path);
+        }
+        //* insert the details inside the DB
+        $category = Category::query()->create([
+            'name'=>$request->name,
+            'image'=>$filename,
+            'slug'=>Str::slug($request->name)
+        ]);
+
+        if($category){
+            Session::flash('success', 'Category Added');
+            return redirect()->back();
+        }
+        else{
+            Session::flash('error','Sorry, Category creation failed. Please try again');
+            return redirect()->back();
+        }
+
     }
 
     /**
