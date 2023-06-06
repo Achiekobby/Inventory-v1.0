@@ -113,7 +113,7 @@
                                                             class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($category->created_at)->format('d/M/Y') }}</span>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <a href="{{ route('suppliers.edit') }}"
+                                                        <a href="{{ route('categories.edit', ['slug' => $category->slug]) }}"
                                                             class=" btn btn-warning btn-tooltip text-white font-weight-bold text-xs"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Edit category" data-original-title="Edit user">

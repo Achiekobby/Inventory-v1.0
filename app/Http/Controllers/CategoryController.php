@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Session;
 use Image;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -82,17 +83,66 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($slug)
     {
-        //
+        $category = Category::query()->where('slug', $slug)->first();
+        return view('Inventory.categories.edit_categories',compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $slug)
     {
-        //
+        $rules = [
+            'name'=>'required|string',
+            'image'=>'nullable',
+        ];
+        $validation = Validator::make($request->all(),$rules);
+        if($validation->fails()){
+            Session::flash('error',$validation->errors()->first());
+            return redirect()->back();
+        }
+        $category = Category::query()->where('slug',$slug)->first();
+        if(!$slug){
+            Session::flash('error','Category not found!!');
+            return redirect()->back();
+        }
+
+        $filename = null;
+        if($request->hasFile('image')){
+
+            //* remove the old image
+            $file = public_path('uploads/'.$category->image);
+            if(File::exists($file)){
+                File::delete($file);
+            }
+
+            $image = $request->file('image');
+            $filename = time().".".$image->getClientOriginalExtension();
+            $path = public_path('uploads/'.$filename);
+
+            //* Resizing the image file
+            Image::make($image)->resize(300,200)->save($path);
+        }
+        else{
+            $filename = $category->image;
+        }
+        //* insert the details inside the DB
+        $category_update = $category->update([
+            'name'=>$request->name,
+            'image'=>$filename,
+            'slug'=>Str::slug($request->name)
+        ]);
+
+        if($category_update){
+            Session::flash('success', 'Category Updated Successfully');
+            return redirect()->route('categories.index');
+        }
+        else{
+            Session::flash('error','Sorry, Category update failed. Please try again');
+            return redirect()->back();
+        }
     }
 
     /**

@@ -48,6 +48,8 @@ Route::middleware(['auth', 'auth_admin'])->group(function(){
         Route::get('/all', [CategoryController::class, 'index'])->name('categories.index');
         Route::post('/new', [CategoryController::class, 'store'])->name('categories.store');
         Route::get('/delete/{slug}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::get('/edit/{slug}', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::post('/update/{slug}', [CategoryController::class, 'update'])->name('categories.update');
     });
 });
 
