@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<style>
+    .fade-out {
+        opacity: 0;
+        transition: 0.5s ease-out;
+    }
+</style>
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
@@ -46,12 +52,20 @@
                             </div>
                         </div>
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-white m-3" role="alert">
+                            <div id="notice" class="alert alert-success alert-dismissible text-white m-3 fade show"
+                                role="alert">
                                 <strong>Success!</strong> {{ Session::get('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         @elseif(Session::has('error'))
-                            <div class="alert alert-danger text-white m-3" role="alert">
+                            <div id="notice" class="alert alert-danger alert-dismissible text-white m-3 fade show"
+                                role="alert">
                                 <strong>Error!</strong> {{ Session::get('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         @endif
                         <div class="card-body px-0 pb-2">
@@ -78,16 +92,16 @@
                                                     <td>
                                                         <div class="d-flex px-2 py-1">
                                                             <div>
-                                                                <img src="{{asset('uploads/'.$category->image)}}"
+                                                                <img src="{{ asset('uploads/' . $category->image) }}"
                                                                     class="avatar avatar-sm me-3 border-radius-lg"
                                                                     alt="user1">
                                                             </div>
                                                             <div class="d-flex flex-column justify-content-center">
                                                                 <h6 class="mb-0 text-sm">
-                                                                    {{$category->name}}
+                                                                    {{ $category->name }}
                                                                 </h6>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                {{ $category->slug }}</p>
+                                                                    {{ $category->slug }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -95,18 +109,20 @@
                                                         <span
                                                             class="badge badge-sm bg-gradient-success">{{ $category->status }}</span>
                                                     <td class="align-middle text-center">
-                                                        <span class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($category->created_at)->format('d/M/Y') }}</span> </td>
+                                                        <span
+                                                            class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($category->created_at)->format('d/M/Y') }}</span>
+                                                    </td>
                                                     <td class="align-middle">
                                                         <a href="{{ route('suppliers.edit') }}"
                                                             class=" btn btn-warning btn-tooltip text-white font-weight-bold text-xs"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Edit Supplier" data-original-title="Edit user">
+                                                            title="Edit category" data-original-title="Edit user">
                                                             <i class="material-icons">edit</i>
                                                         </a>
-                                                        <a href="{{ route('suppliers.delete') }}"
+                                                        <a href="{{ route('categories.destroy', ['slug' => $category->slug]) }}"
                                                             class=" btn btn-danger btn-tooltip text-white font-weight-bold text-xs"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Remove Supplier" data-toggle="tooltip"
+                                                            title="Remove category" data-toggle="tooltip"
                                                             data-original-title="Edit user">
                                                             <i class="material-icons">delete</i>
                                                         </a>
@@ -144,4 +160,13 @@
             </footer>
         </div>
     </main>
+    <script>
+        const notice = document.getElementById('notice');
+        setTimeout(() => {
+            notice.classList.add('fade-out')
+            setTimeout(() => {
+                notice.style.display = 'none';
+            }, 500);
+        }, 3000);
+    </script>
 @endsection
