@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Inventory\Product;
 use Illuminate\Http\Request;
 
+//* Requests
+use App\Http\Requests\Inventory\ProductCreateRequest;
+
+//* Utilities
+use Session;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     /**
@@ -27,9 +34,14 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductCreateRequest $request)
     {
-        //
+        try{
+
+        }catch(\Exception $e){
+            Session::flash('error',$e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**

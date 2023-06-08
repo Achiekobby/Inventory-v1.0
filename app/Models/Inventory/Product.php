@@ -2,6 +2,8 @@
 
 namespace App\Models\Inventory;
 use App\Models\Inventory\Category;
+use App\Models\User;
+use App\Models\Inventory\Supplier;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,4 +35,13 @@ class Product extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function supplier(){
+        return $this->belongsTo(Supplier::class);
+    }
+
 }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
             $table->foreignUuid('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->cascadeOnDelete();
+            $table->foreignUuid('added_by');
+            $table->foreign('added_by')->references('id')->on('users')->cascadeOnDelete();
             $table->string('brand');
             $table->string('SKU');
             $table->string('name');
