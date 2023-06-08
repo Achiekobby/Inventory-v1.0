@@ -26,6 +26,7 @@ class ProductCreateRequest extends FormRequest
             'name'=>'required|string',
             'supplier'=>'required',
             'category'=>'required',
+            'brand'=>'required',
             'image'=>'nullable|mimes:jpeg,png,jpg,bmp,gif',
             'unit_cost'=>'required',
             'quantity'=>'required',
