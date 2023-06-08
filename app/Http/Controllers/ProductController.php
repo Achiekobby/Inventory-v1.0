@@ -12,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::query()->orderBy('created_at','DESC')->paginate(10);
+        return view('Inventory.products.products',compact('products'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('Inventory.products.create_product');
     }
 
     /**

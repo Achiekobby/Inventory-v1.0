@@ -15,8 +15,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
+            $table->foreignUuid('supplier_id');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->cascadeOnDelete();
             $table->string('brand');
+            $table->string('SKU');
             $table->string('name');
+            $table->longText('desc')->nullable();
             $table->string('slug');
             $table->string('code');
             $table->string('image');

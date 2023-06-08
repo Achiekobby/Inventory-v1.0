@@ -14,6 +14,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id',
+        'supplier_id',
         'brand',
         'name',
         'code',
@@ -24,7 +25,9 @@ class Product extends Model
         'status',
         'unit_price',
         'total_price',
-        'quantity'
+        'quantity',
+        'SKU',
+        'desc'
     ];
 
     public function category(){
